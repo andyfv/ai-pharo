@@ -5,10 +5,49 @@ Class {
 }
 
 { #category : #'instance creation' }
+PerceptronTest >> digitalComparator: inputs [ 
+	"Receive two elements as inputs.
+	Return an array of three elements."
+	
+	|not and nor a b aGb aEb aLb notA notB|
+	
+	a := inputs first.
+	b := inputs second.
+	
+	and := self newNeuron weights: #(1 1); bias: -1.5.
+	not := self newNeuron weights: #(-1);  bias: 0.5.
+	nor := self newNeuron weights: #(-1 -1); bias: 0.5.
+	
+	notA := not feed: { a }.
+	notB := not feed: { b }.
+	
+	aLb := and feed: { notA . b }. 	"A = 0, B = 1, A < B"
+	aGb := and feed: { a . notB }.		"A = 1, B = 0, A > B"
+	aEb := nor feed: { aGb . aLb }.	"A = 0, B = 0, A = B  or
+												 A = 1, B = 1, A = B"
+	
+	^ { aGb . aEb . aLb }
+]
+
+{ #category : #'instance creation' }
 PerceptronTest >> newNeuron [
 "Return a new neuron"
 
 ^ Neuron new.
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testAND [
+	|p|
+	p := self newNeuron.
+	p weights: #(1 1).
+	p bias: -1.5.
+	
+	self assert: (p feed: #(0 0)) equals: 0.
+	self assert: (p feed: #(0 1)) equals: 0.
+	self assert: (p feed: #(1 0)) equals: 0.
+	self assert: (p feed: #(1 1)) equals: 1.
+	
 ]
 
 { #category : #'instance creation' }
@@ -29,6 +68,55 @@ PerceptronTest >> testAddingWeightsAsDynamicCollection [
 ]
 
 { #category : #'instance creation' }
+PerceptronTest >> testDidigitalComparator [
+	self assert: (self digitalComparator: #(0 0)) equals: #(0 1 0).
+	self assert: (self digitalComparator: #(0 1)) equals: #(0 0 1).
+	self assert: (self digitalComparator: #(1 0)) equals: #(1 0 0).
+	self assert: (self digitalComparator: #(1 1)) equals: #(0 1 0).	
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testNOR [
+	"Negating the weights and the bias results in a negated logic gate"
+	|p|
+	p := self newNeuron.
+	p weights: #(-1 -1).
+	p bias: 0.5.
+	
+	self assert: (p feed: #(0 0)) equals: 1.
+	self assert: (p feed: #(0 1)) equals: 0.
+	self assert: (p feed: #(1 0)) equals: 0.
+	self assert: (p feed: #(1 1)) equals: 0.
+	
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testNOT [
+	|p|
+	p := self newNeuron.
+	p weights: #(-1).
+	p bias: 0.5.
+	
+	self assert: (p feed: #(0)) equals: 1.
+	self assert: (p feed: #(1)) equals: 0.
+	
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testOR [
+	|p|
+	p := self newNeuron.
+	p weights: #(1 1).
+	p bias: -0.5.
+	
+	self assert: (p feed: #(0 0)) equals: 0.
+	self assert: (p feed: #(0 1)) equals: 1.
+	self assert: (p feed: #(1 0)) equals: 1.
+	self assert: (p feed: #(1 1)) equals: 1.
+	
+]
+
+{ #category : #'instance creation' }
 PerceptronTest >> testSmallExample [
 |p result|
 
@@ -38,4 +126,48 @@ p bias: -2.
 result := p feed: #(5 2).
 
 self assert: result equals: 1.
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testSmallExampleWithOppositeValues [
+|p result|
+
+p := self newNeuron.
+p weights: #(1 2).
+p bias: -2.
+result := p feed: #(2 -2).
+
+self assert: result equals: 0.
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testTrainingOR [
+	| p |
+	p := self newNeuron.
+	p weights: #(-1 -1).
+	p bias: 2.
+	
+	40 timesRepeat: [ 
+		p train: #(0 0) desiredOutput: 0.
+		p train: #(0 1) desiredOutput: 1.
+		p train: #(1 0) desiredOutput: 1.
+		p train: #(1 1) desiredOutput: 1. 
+		].
+	
+	self assert: (p feed: #(0 0)) equals: 0.
+	self assert: (p feed: #(0 1)) equals: 1.
+	self assert: (p feed: #(1 0)) equals: 1.
+	self assert: (p feed: #(1 1)) equals: 1.
+]
+
+{ #category : #'instance creation' }
+PerceptronTest >> testWrongFeeding [
+"The number of inputs and weights should match. Returns an error if mismatched"
+	|p|
+	
+	p := self newNeuron.
+	p weights: #(-1).
+	p bias: 0.5.
+	
+	self should: [ p feed: #(1 1) ] raise: Error.
 ]
