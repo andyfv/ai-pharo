@@ -79,5 +79,5 @@ Neuron >> weights: someWeightsAsNumbers [
 "Set the weights of the neuron.
 Takes a collection of numbers as argument"
 
-weights := someWeightsAsNumbers 
+weights := someWeightsAsNumbers asOrderedCollection.
 ]
