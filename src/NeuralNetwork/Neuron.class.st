@@ -7,7 +7,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'bias',
-		'weights'
+		'weights',
+		'learningRate'
 	],
 	#category : #NeuralNetwork
 }
@@ -31,6 +32,32 @@ Neuron >> feed: inputs [
 | z |
 z := (inputs with: weights collect: [:x :w | x * w]) sum + bias.
 ^ z > 0 ifTrue: [ 1 ] ifFalse: [ 0 ].
+]
+
+{ #category : #accessing }
+Neuron >> learningRate [
+	"Return the learning rate of the neuron"
+	
+	^ learningRate
+]
+
+{ #category : #accessing }
+Neuron >> learningRate: aNumber [
+	"Set the learning rate of the neuron"
+	
+	learningRate := aNumber
+]
+
+{ #category : #accessing }
+Neuron >> train: inputs desiredOutput: desiredOutput [
+	| error output newWeight|
+	
+	output := self feed: inputs.
+	error  := desiredOutput - output.
+	inputs withIndexDo: [ :anInput :index |
+		newWeight := (weights at: index) + (learningRate * error * anInput).
+		weights at: index put: newWeight].
+	bias := bias + (learningRate * error).
 ]
 
 { #category : #accessing }
