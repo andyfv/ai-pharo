@@ -34,6 +34,13 @@ z := (inputs with: weights collect: [:x :w | x * w]) sum + bias.
 ^ z > 0 ifTrue: [ 1 ] ifFalse: [ 0 ].
 ]
 
+{ #category : #initialization }
+Neuron >> initialize [ 
+	super initialize.
+	
+	learningRate := 0.1.
+]
+
 { #category : #accessing }
 Neuron >> learningRate [
 	"Return the learning rate of the neuron"
