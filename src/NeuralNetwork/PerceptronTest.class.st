@@ -36,7 +36,7 @@ PerceptronTest >> newNeuron [
 ^ Neuron new.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testAND [
 	|p|
 	p := self newNeuron.
@@ -50,7 +50,7 @@ PerceptronTest >> testAND [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testAddingWeightsAsDynamicCollection [
 	"Test that the weights instance variable 
 	is not stored as a literal array but as a
@@ -67,7 +67,7 @@ PerceptronTest >> testAddingWeightsAsDynamicCollection [
 	self assert: (p weights at: 2) equals: 4.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testDidigitalComparator [
 	self assert: (self digitalComparator: #(0 0)) equals: #(0 1 0).
 	self assert: (self digitalComparator: #(0 1)) equals: #(0 0 1).
@@ -75,7 +75,7 @@ PerceptronTest >> testDidigitalComparator [
 	self assert: (self digitalComparator: #(1 1)) equals: #(0 1 0).	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testNOR [
 	"Negating the weights and the bias results in a negated logic gate"
 	|p|
@@ -90,7 +90,7 @@ PerceptronTest >> testNOR [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testNOT [
 	|p|
 	p := self newNeuron.
@@ -102,7 +102,7 @@ PerceptronTest >> testNOT [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testOR [
 	|p|
 	p := self newNeuron.
@@ -116,7 +116,7 @@ PerceptronTest >> testOR [
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testSmallExample [
 |p result|
 
@@ -128,7 +128,7 @@ result := p feed: #(5 2).
 self assert: result equals: 1.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testSmallExampleWithOppositeValues [
 |p result|
 
@@ -197,7 +197,7 @@ PerceptronTest >> testTrainingNOT [
 	self assert: (p feed: #(1)) equals: 0.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #'tests-Training Logic Gates' }
 PerceptronTest >> testTrainingOR [
 	| p |
 	p := self newNeuron.
@@ -217,7 +217,7 @@ PerceptronTest >> testTrainingOR [
 	self assert: (p feed: #(1 1)) equals: 1.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #tests }
 PerceptronTest >> testWrongFeeding [
 "The number of inputs and weights should match. Returns an error if mismatched"
 	|p|
