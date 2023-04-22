@@ -140,6 +140,63 @@ result := p feed: #(2 -2).
 self assert: result equals: 0.
 ]
 
+{ #category : #'tests-Training Logic Gates' }
+PerceptronTest >> testTrainingAND [
+	| p |
+	p := self newNeuron.
+	p weights: #(-1 -1).
+	p bias: 2.
+	
+	40 timesRepeat: [ 
+		p train: #(0 0) desiredOutput: 0.
+		p train: #(0 1) desiredOutput: 0.
+		p train: #(1 0) desiredOutput: 0.
+		p train: #(1 1) desiredOutput: 1. 
+		].
+	
+	self assert: (p feed: #(0 0)) equals: 0.
+	self assert: (p feed: #(0 1)) equals: 0.
+	self assert: (p feed: #(1 0)) equals: 0.
+	self assert: (p feed: #(1 1)) equals: 1.
+]
+
+{ #category : #'tests-Training Logic Gates' }
+PerceptronTest >> testTrainingNOR [
+	| p |
+	p := self newNeuron.
+	p weights: #(-1 -1).
+	p bias: 2.
+	
+	40 timesRepeat: [ 
+		p train: #(0 0) desiredOutput: 1.
+		p train: #(0 1) desiredOutput: 0.
+		p train: #(1 0) desiredOutput: 0.
+		p train: #(1 1) desiredOutput: 0. 
+		].
+	
+	self assert: (p feed: #(0 0)) equals: 1.
+	self assert: (p feed: #(0 1)) equals: 0.
+	self assert: (p feed: #(1 0)) equals: 0.
+	self assert: (p feed: #(1 1)) equals: 0.
+]
+
+{ #category : #'tests-Training Logic Gates' }
+PerceptronTest >> testTrainingNOT [
+	"Test training a perceptron to model the NOT logical gate"
+	| p |
+	p := self newNeuron.
+	p weights: #(-1).
+	p bias: 2.
+	
+	5 timesRepeat: [ 
+		p train: #(0) desiredOutput: 1.
+		p train: #(1) desiredOutput: 0. 
+		].
+	
+	self assert: (p feed: #(0)) equals: 1.
+	self assert: (p feed: #(1)) equals: 0.
+]
+
 { #category : #'instance creation' }
 PerceptronTest >> testTrainingOR [
 	| p |
