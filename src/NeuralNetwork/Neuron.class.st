@@ -8,7 +8,8 @@ Class {
 	#instVars : [
 		'bias',
 		'weights',
-		'learningRate'
+		'learningRate',
+		'activationFunction'
 	],
 	#category : #NeuralNetwork
 }
@@ -74,7 +75,7 @@ RSNormalizer color
 Neuron >> feed: inputs [
 | z |
 z := (inputs with: weights collect: [:x :w | x * w]) sum + bias.
-^ z > 0 ifTrue: [ 1 ] ifFalse: [ 0 ].
+^ activationFunction eval: z.
 ]
 
 { #category : #initialization }
@@ -82,6 +83,7 @@ Neuron >> initialize [
 	super initialize.
 	
 	learningRate := 0.1.
+	self sigmoid.
 ]
 
 { #category : #accessing }
@@ -92,10 +94,11 @@ Neuron >> learningRate [
 ]
 
 { #category : #accessing }
-Neuron >> learningRate: aNumber [
-	"Set the learning rate of the neuron"
+Neuron >> learningRate: aFloat [
+	"Set the learning rate of the neuron. The argument should be a small floating value.
+	For example 0.01"
 	
-	learningRate := aNumber
+	learningRate := aFloat
 ]
 
 { #category : #example }
@@ -220,16 +223,32 @@ canvas @ RSCanvasController .
 canvas open.
 ]
 
+{ #category : #initialization }
+Neuron >> sigmoid [
+"Use the sigmoid activation function"
+
+activationFunction := SigmoidAF new.
+]
+
+{ #category : #initialization }
+Neuron >> step [
+"Use the step activation function"
+
+activationFunction := StepAF new.
+]
+
 { #category : #accessing }
 Neuron >> train: inputs desiredOutput: desiredOutput [
-	| error output newWeight|
+	| diff output delta|
 	
 	output := self feed: inputs.
-	error  := desiredOutput - output.
+	diff  := desiredOutput - output.
+	delta := diff * (activationFunction derivative: output).
+	
 	inputs withIndexDo: [ :anInput :index |
-		newWeight := (weights at: index) + (learningRate * error * anInput).
-		weights at: index put: newWeight].
-	bias := bias + (learningRate * error).
+		weights at: index put: ( (weights at: index) + (learningRate * delta * anInput) )
+		].
+	bias := bias + (learningRate * delta).
 ]
 
 { #category : #accessing }

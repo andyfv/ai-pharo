@@ -33,7 +33,7 @@ PerceptronTest >> digitalComparator: inputs [
 PerceptronTest >> newNeuron [
 "Return a new neuron"
 
-^ Neuron new.
+^ Neuron new step.
 ]
 
 { #category : #tests }
