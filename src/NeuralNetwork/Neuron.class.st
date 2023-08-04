@@ -9,10 +9,28 @@ Class {
 		'bias',
 		'weights',
 		'learningRate',
-		'activationFunction'
+		'activationFunction',
+		'delta',
+		'output'
 	],
 	#category : #NeuralNetwork
 }
+
+{ #category : #update }
+Neuron >> adjustBias [
+	bias := bias + (learningRate * delta)
+]
+
+{ #category : #update }
+Neuron >> adjustDeltaWith: anError [
+delta := anError * (activationFunction derivative: output).
+]
+
+{ #category : #update }
+Neuron >> adjustWeightWithInput: inputs [ 
+	inputs withIndexDo: [ :anInput :index |
+		weights at: index put: ((weights at: index) + (learningRate * delta * anInput)) ].
+]
 
 { #category : #accessing }
 Neuron >> bias [
@@ -26,6 +44,12 @@ Neuron >> bias: aNumber [
 "Set the bias of the neuron."
 
 bias := aNumber  
+]
+
+{ #category : #accessing }
+Neuron >> delta [
+"Return the delta value computed wen propagating the error"
+	^ delta
 ]
 
 { #category : #example }
@@ -75,7 +99,8 @@ RSNormalizer color
 Neuron >> feed: inputs [
 | z |
 z := (inputs with: weights collect: [:x :w | x * w]) sum + bias.
-^ activationFunction eval: z.
+output := activationFunction eval: z.
+^ output
 ]
 
 { #category : #initialization }
@@ -164,6 +189,13 @@ f := [ :x | (-2 * x) -3 ].
 	^ chart canvas open
 ]
 
+{ #category : #computation }
+Neuron >> output [
+"Return the output value, previous computed when doing a feed:"
+
+^ output
+]
+
 { #category : #example }
 Neuron >> predicting [
 " Run the example to see the results:
@@ -237,7 +269,7 @@ Neuron >> step [
 activationFunction := StepAF new.
 ]
 
-{ #category : #accessing }
+{ #category : #update }
 Neuron >> train: inputs desiredOutput: desiredOutput [
 	| diff output delta|
 	
