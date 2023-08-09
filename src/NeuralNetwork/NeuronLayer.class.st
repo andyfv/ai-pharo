@@ -107,8 +107,7 @@ NeuronLayer >> learningRate: aFloat [
 The method should be called after configuring the network, 
 and not before"
 
-self assert: [ neurons notEmpty ] description: 'learningRate: should be invoked
-																 configuring the layer'.
+self assert: [ neurons notEmpty ] description: 'learningRate: should be invoked after configuring the layer'.
 neurons do: [ :n | n learningRate: aFloat ].
 ]
 
