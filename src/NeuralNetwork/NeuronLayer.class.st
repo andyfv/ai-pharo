@@ -73,9 +73,10 @@ NeuronLayer >> feed: someInputValues [
 someOutputs := neurons collect: [ :n | n feed: someInputValues ] as: Array.
 ^ self isOutputLayer
 			ifTrue: [ someOutputs ]
-			ifFalse: [ nextLayer feed: someOutputs ].  		"If the layer is a hidden layer
-																			we feed-forward the the compound values
-																			to the next layer"
+			
+			"If the layer is a hidden layer we feed-forward 
+			the the compound values to the next layer"
+			ifFalse: [ nextLayer feed: someOutputs ].
 ]
 
 { #category : #initialization }

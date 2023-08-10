@@ -69,8 +69,21 @@ NNetwork >> configure: nbOfInputs hidden: nbOfNeurons nbOfOutputs: nbOfOutput [
 | random |
 random := Random seed: 42.
 
-self addLayer: (NeuronLayer new initializeNbOfNeurons: nbOfNeurons nbOfWeights: nbOfInputs using: random ).
-self addLayer: (NeuronLayer new initializeNbOfNeurons: nbOfOutput nbOfWeights: nbOfNeurons using: random ).
+"Add the hidden layer"
+self addLayer: 
+	(NeuronLayer new 
+		initializeNbOfNeurons: nbOfNeurons 
+		nbOfWeights: nbOfInputs 
+		using: random 
+		).
+
+"Add the output layer"
+self addLayer: 
+	(NeuronLayer new 
+		initializeNbOfNeurons: nbOfOutput 
+		nbOfWeights: nbOfNeurons 
+		using: random 
+		).
 ]
 
 { #category : #examples }
