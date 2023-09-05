@@ -202,3 +202,34 @@ NNetwork >> updateWeight: initialInputs [
 
 layers first updateWeight: initialInputs .
 ]
+
+{ #category : #visualization }
+NNetwork >> viewLearningCurve [
+"Draw the error and precision curve"
+
+
+| chart plotErrors plotPrecision |
+
+chart := RSCompositeChart new.
+
+"Define the size of the charting area"
+chart extent: 500 @ 300.
+
+"Don't draw anything if the network has not been run"
+errors ifEmpty: [ ^ chart add: (RSLabel text: 'Should first run the network') ].
+
+plotErrors := RSLinePlot new.
+plotPrecision := RSLinePlot new.
+
+"Add the error points on the plot"
+plotErrors y: errors.
+chart add: plotErrors.
+
+"Add the preisions points on the plot"
+plotPrecision y: precisions.
+plotPrecision color: Color red.
+chart add: plotPrecision.
+
+chart build.
+^ chart canvas open
+]
