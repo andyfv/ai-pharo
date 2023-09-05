@@ -126,6 +126,20 @@ errors := OrderedCollection new.
 precisions := OrderedCollection new.
 ]
 
+{ #category : #inspector }
+NNetwork >> inspectorVisualization [
+<inspectorPresentationOrder: 90 title: 'Learning Curve'>
+
+^ SpRoassal3InspectorPresenter new
+	canvas: self viewLearningCurve;
+	yourself.
+]
+
+{ #category : #inspector }
+NNetwork >> inspectorVisualizationContext: aContext [
+aContext withoutEvaluator 
+]
+
 { #category : #update }
 NNetwork >> learningRate: aFloat [
 "Set the learning rate for all the layers"
@@ -223,13 +237,14 @@ plotPrecision := RSLinePlot new.
 
 "Add the error points on the plot"
 plotErrors y: errors.
+plotErrors color: Color blue.
 chart add: plotErrors.
 
-"Add the preisions points on the plot"
+"Add the precisions points on the plot"
 plotPrecision y: precisions.
 plotPrecision color: Color red.
 chart add: plotPrecision.
 
 chart build.
-^ chart canvas open
+^ chart canvas
 ]
