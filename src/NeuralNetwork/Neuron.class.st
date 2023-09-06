@@ -60,37 +60,37 @@ Neuron >> example [
 	
 	"
 
-| somePoints x y f chart plot dots |
-somePoints := OrderedCollection new.
-x := OrderedCollection new.
-y := OrderedCollection new.
-50 timesRepeat: [ 
+| f chart redPlot bluePlot reds blues |
+
+reds := OrderedCollection new.
+blues := OrderedCollection new.
+f := [ :x | (-2 * x) - 3 ].
+
+500 timesRepeat: [ 
 	| xValue yValue |
 	xValue := (50 atRandom - 25).
 	yValue := (50 atRandom - 25).
-	somePoints add: { xValue . yValue }.
-	x add: xValue.
-	y add: yValue.
+	yValue < (f value: xValue)
+		ifTrue: [ reds add:  (xValue @ yValue) ]
+		ifFalse: [ blues add: (xValue @ yValue) ].
 	].
 
-f := [ :i | (-2 * i) - 3 ].
-
-"Plot points "
-
 chart := RSCompositeChart new.
-plot := RSScatterPlot new x: x y: y.
+bluePlot := RSScatterPlot new 
+						rawData: blues 
+						x: [ :point | point x ]  
+						y: [ :point | point y ];
+						color: Color blue translucent. 
+redPlot := RSScatterPlot new 
+					rawData: reds 
+					x: [ :point | point x ] 
+					y: [ :point | point y ]; 
+					color: Color red translucent.
 
-dots := RSCircle models: somePoints.
-chart add: plot.
-dots @ RSPopup.
-
-RSNormalizer color
-	shapes: dots;
-	normalize: [ :s | (s second) > (f value: s first) 
-						ifTrue: [ Color red translucent ]
-						ifFalse: [ Color blue translucent ] ].
-					
-^ chart canvas
+chart add: redPlot.
+chart add: bluePlot.
+chart build.
+^ chart canvas open
 
 
 ]
@@ -245,8 +245,8 @@ RSNormalizer position
 	
 canvas add: (RSLine new from: 0 @ -250;  to: 0 @ 250 ).
 canvas add: (RSLine new from: -250 @ 0; to: 250 @ 0).
-canvas add: (RSLine new from: (-250 @ (f value: -250) negated); 
-								to: (250 @ (f value: 250) negated );
+canvas add: (RSLine new from: (250 @ (f value: 250) ); 
+								to: (-250 @ (f value: -250) );
 								color: Color red;
 								width: 3 ).
 
