@@ -126,8 +126,8 @@ errors := OrderedCollection new.
 precisions := OrderedCollection new.
 ]
 
-{ #category : #inspector }
-NNetwork >> inspectorVisualization [
+{ #category : #'inspector integration' }
+NNetwork >> inspectorViewLearningCurve [
 <inspectorPresentationOrder: 90 title: 'Learning Curve'>
 
 ^ SpRoassal3InspectorPresenter new
@@ -135,8 +135,8 @@ NNetwork >> inspectorVisualization [
 	yourself.
 ]
 
-{ #category : #inspector }
-NNetwork >> inspectorVisualizationContext: aContext [
+{ #category : #'inspector integration' }
+NNetwork >> inspectorViewLearningCurveContext: aContext [
 aContext withoutEvaluator 
 ]
 
