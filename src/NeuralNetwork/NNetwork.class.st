@@ -140,11 +140,39 @@ NNetwork >> inspectorViewLearningCurveContext: aContext [
 aContext withoutEvaluator 
 ]
 
+{ #category : #'inspector integration' }
+NNetwork >> inspectorViewNetwork [
+<inspectorPresentationOrder: 90 title: 'Network'>
+
+^ SpRoassal3InspectorPresenter new
+	canvas: self viewNetwork;
+	yourself.
+]
+
+{ #category : #'inspector integration' }
+NNetwork >> inspectorViewNetworkContext: aContext [
+	 aContext withoutEvaluator 
+]
+
 { #category : #update }
 NNetwork >> learningRate: aFloat [
 "Set the learning rate for all the layers"
 
 layers do: [ :l | l learningRate: aFloat ]
+]
+
+{ #category : #visualization }
+NNetwork >> numberOfInputs [
+"Return the number of inputs the network has"
+
+^ layers first neurons size
+]
+
+{ #category : #visualization }
+NNetwork >> numberOfNeurons [
+"Return the total number of neurons the network has"
+
+^ (layers collect: #numberOfNeurons) sum
 ]
 
 { #category : #accessing }
@@ -247,4 +275,32 @@ chart add: plotPrecision.
 
 chart build.
 ^ chart canvas
+]
+
+{ #category : #visualization }
+NNetwork >> viewNetwork [
+
+| b lb |
+b := RSMondrian new.
+
+b nodes: layers forEach: [ :aLayer |
+	b shape circle size: 20; color: Color darkGray.
+	b nodes: aLayer neurons.
+	b layout vertical. 
+	].
+
+b arrowedLine.
+b orthoHorizontalline connectTo: #nextLayer.
+b layout horizontal gapSize: 30.
+
+b build.
+
+lb := RSLegend new.
+lb container: b canvas.
+lb text: (self numberOfNeurons asString) description: ' neurons'.
+lb text: (self numberOfInputs asString) description: ' inputs'.
+
+lb build.
+
+^ b canvas.
 ]
