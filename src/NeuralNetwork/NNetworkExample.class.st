@@ -26,6 +26,26 @@ n train: irisData nbEpochs: 1000.
 ]
 
 { #category : #examples }
+NNetworkExample >> exampleLearningCurve [
+"See the effects of a different learning rate of a neuron
+Run the example below to see the results: "
+
+"NNetworkExample new exampleLearningCurve "
+
+| n data |
+n := NNetwork new.
+n configure: 2 hidden: 3 nbOfOutputs: 2.
+data := 
+	{ #(0 0 0) 
+	. #(0 1 1)
+	. #(1 0 1)
+	. #(1 1 0) 
+	}.
+n train: data nbEpochs: 10000.
+^ n
+]
+
+{ #category : #examples }
 NNetworkExample >> exampleLearningRate [
 "See the effects of a different learning rate of a neuron
 Run the example below to see the results: "
