@@ -249,32 +249,35 @@ layers first updateWeight: initialInputs .
 NNetwork >> viewLearningCurve [
 "Draw the error and precision curve"
 
+| chartErrors chartPrecisions plotErrors plotPrecision canvas |
 
-| chart plotErrors plotPrecision |
-
-chart := RSCompositeChart new.
+canvas := RSCanvas new.
 
 "Define the size of the charting area"
-chart extent: 500 @ 300.
+canvas extent: 500 @ 300.
 
 "Don't draw anything if the network has not been run"
-errors ifEmpty: [ ^ chart add: (RSLabel text: 'Should first run the network') ].
+errors ifEmpty: [ ^ canvas add: (RSLabel new text: 'Should first run the network'; fontSize: 15); yourself ].
 
-plotErrors := RSLinePlot new.
-plotPrecision := RSLinePlot new.
+plotErrors := RSLinePlot new y: errors.
+plotErrors color: Color red.
+chartErrors := RSCompositeChart new.
+chartErrors horizontalTick integer.
+chartErrors add: plotErrors.
+chartErrors build.
 
-"Add the error points on the plot"
-plotErrors y: errors.
-plotErrors color: Color blue.
-chart add: plotErrors.
+plotPrecision := RSLinePlot new y: precisions.
+chartPrecisions := RSCompositeChart new.
+chartPrecisions removeAllTicks.
+chartPrecisions addDecoration: (RSVerticalRightTick new values: {precisions min . precisions max}).
+chartPrecisions add: plotPrecision.
+chartPrecisions build.
 
-"Add the precisions points on the plot"
-plotPrecision y: precisions.
-plotPrecision color: Color red.
-chart add: plotPrecision.
+canvas add: (chartErrors canvas asShape).
+canvas add: (chartPrecisions canvas asShape).
+canvas @ RSCanvasController.
 
-chart build.
-^ chart canvas
+^ canvas
 ]
 
 { #category : #visualization }
