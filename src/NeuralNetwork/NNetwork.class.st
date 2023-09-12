@@ -259,18 +259,23 @@ canvas extent: 500 @ 300.
 "Don't draw anything if the network has not been run"
 errors ifEmpty: [ ^ canvas add: (RSLabel new text: 'Should first run the network'; fontSize: 15); yourself ].
 
-plotErrors := RSLinePlot new y: errors.
-plotErrors color: Color red.
+"Add the errors chart"
+plotErrors := RSLinePlot new y: errors; color: Color red.
 chartErrors := RSCompositeChart new.
-chartErrors horizontalTick integer.
+chartErrors removeHorizontalTicks.
+chartErrors verticalTick styler tickColor: Color red; textColor: Color red.
+chartErrors ylabel: 'Errors'.
 chartErrors add: plotErrors.
 chartErrors build.
 
-plotPrecision := RSLinePlot new y: precisions.
+"Add the precisions chart"
+plotPrecision := RSLinePlot new y: precisions; color: Color blue.
 chartPrecisions := RSCompositeChart new.
-chartPrecisions removeAllTicks.
-chartPrecisions addDecoration: (RSVerticalRightTick new values: {precisions min . precisions max}).
 chartPrecisions add: plotPrecision.
+chartPrecisions removeVerticalTicks.
+chartPrecisions addDecoration: (RSVerticalRightTick new values: {precisions min . precisions max}).
+(chartPrecisions ylabelRight: 'Precisions') styler textColor: Color blue.
+chartPrecisions horizontalTick integer.
 chartPrecisions build.
 
 canvas add: (chartErrors canvas asShape).
