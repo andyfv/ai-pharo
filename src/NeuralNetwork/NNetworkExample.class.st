@@ -114,6 +114,46 @@ legend build.
 ]
 
 { #category : #examples }
+NNetworkExample >> exampleLearningRateNetwork [
+"See the effects of a different learning rate of a network
+Run the example below to see the results: "
+
+"NNetworkExample new exampleLearningRateNetwork "
+
+| canvas learningRates irisData |
+
+irisData := self getIrisData.
+learningRates := #(0.001 0.01 0.1 0.3).
+
+canvas := RSCanvas new.
+
+learningRates doWithIndex: [ :rate :index |
+	| network canvasWithLabel |
+	
+	"Create and train a network"
+	network := NNetwork new.
+	network configure: 4 hidden: 6 nbOfOutputs: 3.
+	network learningRate: rate.
+	network train: irisData nbEpochs: 1000.
+	
+	"Add label to the learning curve chart with the used learning rate"
+	canvasWithLabel := RSCanvas new.
+	canvasWithLabel add: (RSLabel new text: 'Learning rate = ' , rate asString).
+	canvasWithLabel add: network viewLearningCurve asShape.
+	RSVerticalLineLayout new on: canvasWithLabel shapes; gapSize: 10.
+
+	canvas add: canvasWithLabel asShape.
+	].
+
+RSGridLayout new on: canvas shapes; gapSize: 30.
+
+canvas @ RSDraggable @ RSCanvasController.
+
+^  canvas
+
+]
+
+{ #category : #examples }
 NNetworkExample >> exampleLearningRateNeuron [
 "See the effects of a different learning rate of a neuron
 Run the example below to see the results: "
