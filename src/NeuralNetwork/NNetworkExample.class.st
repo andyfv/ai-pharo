@@ -192,7 +192,7 @@ colorScale := NSScale category20.
 chart colors: colorScale .
 learningRates := #(0.001 0.01 0.1 0.2 0.3).
 
-learningRates doWithIndex: [ :rate :index |
+learningRates do: [ :rate |
 	| learningCurveNeuron plot |
 	
 	learningCurveNeuron := OrderedCollection new.
