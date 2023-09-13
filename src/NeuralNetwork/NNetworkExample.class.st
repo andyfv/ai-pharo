@@ -8,6 +8,31 @@ Class {
 }
 
 { #category : #examples }
+NNetworkExample >> exampleContradictoryData [
+"Example of a contradictory data. In effect the error curve cannot get close to 0.
+The first example that trains the network to output 0 with input (0 0). The second 
+example that trains the network outputs 1 for the same input.
+
+Inspect the script below to see the results
+
+NNetworkExample new exampleContradictoryData 
+
+"
+
+
+| n data |
+n := NNetwork new.
+n configure: 2 hidden: 3 nbOfOutputs: 2.
+
+data := 
+	{ #(0 0 0)
+	. #(0 0 1) 
+	}.
+	
+^ n train: data nbEpochs: 1000.
+]
+
+{ #category : #examples }
 NNetworkExample >> exampleIrisDataset [
 "Prepare the Iris Dataset and train a network on it.
 Run the example below to see the results: "
