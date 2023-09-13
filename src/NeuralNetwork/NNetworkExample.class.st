@@ -8,6 +8,85 @@ Class {
 }
 
 { #category : #examples }
+NNetworkExample >> exampleAccuracy [
+	"Split a dataset in training and test sets. Then compute the ratio 
+of correctly classified results.
+
+Inspect (Cmd - I / Select the script -> Right click -> Inspect it) the script below:
+
+NNetworkExample new exampleAccuracy
+
+"
+
+	| irisData cut cutTraining cutTest trainingData testData n acc |
+	irisData := self getIrisData.
+	cut := 0.8.
+
+	"Compute the size of the training and test sets. We use 80% of the irisData for training."
+	cutTraining := (irisData size * cut) rounded.
+	cutTest := (irisData size * (1 - cut)) rounded.
+
+	"Get the training and test sets"
+	trainingData := irisData first: cutTraining.
+	testData := irisData last: cutTest.
+
+
+	"Train the network"
+	n := NNetwork new.
+	n configure: 4 hidden: 6 nbOfOutputs: 3.
+	n train: trainingData nbEpochs: 1000.
+
+	"Test the network. First predict the classification of the input. Second select
+only the correctly classified results. Third, compute the ratio of correctly classified results"
+	acc := (((testData collect: [ :d |
+		          (n predict: d allButLast) = d last ]) select: [ :d |
+		         d = true ]) size / testData size) asFloat round: 2.
+
+	^ acc
+]
+
+{ #category : #examples }
+NNetworkExample >> exampleAccuracyWithDifferentCuts [
+	"Split a dataset in training and test sets. Then compute the ratio 
+of correctly classified results.
+
+Run the example below (Cmd - I / Select the script -> Right click -> Inspect it) to see the results:
+
+NNetworkExample new exampleAccuracyWithDifferentCuts
+
+"
+
+	| shuffledIrisData cuts acc accData |
+	shuffledIrisData := self getIrisData shuffleBy: (Random seed: 42).
+	accData := OrderedCollection new.
+	cuts := #( 0.6 0.5 0.4 ).
+
+	cuts do: [ :cut |
+		| cutTraining cutTest trainingData testData n |
+		cutTraining := (shuffledIrisData size * cut) rounded.
+		cutTest := (shuffledIrisData size * (1 - cut)) rounded.
+
+		"Get the training and test sets"
+		trainingData := shuffledIrisData first: cutTraining.
+		testData := shuffledIrisData last: cutTest.
+
+
+		"Train the network"
+		n := NNetwork new.
+		n configure: 4 hidden: 6 nbOfOutputs: 3.
+		n train: trainingData nbEpochs: 1000.
+
+		"Test the network. First predict the classification of the input. Second select
+		only the correctly classified results. Third, compute the ratio of correctly classified results"
+		acc := (((testData collect: [ :d |
+			          (n predict: d allButLast) = d last ]) select: [ :d |
+			         d = true ]) size / testData size) asFloat round: 2.
+
+		accData add: cut -> acc ].
+	^ accData
+]
+
+{ #category : #examples }
 NNetworkExample >> exampleContradictoryData [
 "Example of a contradictory data. In effect the error curve cannot get close to 0.
 The first example that trains the network to output 0 with input (0 0). The second 
