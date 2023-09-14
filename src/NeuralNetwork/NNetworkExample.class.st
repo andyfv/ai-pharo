@@ -326,6 +326,31 @@ legend build.
 ]
 
 { #category : #'helper methods' }
+NNetworkExample >> exampleNormalizedData [
+	"Run the script below to see the results: 
+	
+	NNetworkExample new exampleNormalizedData
+	
+	"
+
+	| n data |
+	n := NNetwork new.
+	n configure: 3 hidden: 8 nbOfOutputs: 8.
+
+	data := { #( 0 0 0 0 )
+				. #( 0 0 1 1 )
+				. #( 0 1 0 2 )
+				. #( 0 1 1 3 )
+				. #( 1 0 0 4 )
+				. #( 1 0 1 5 )
+				. #( 1 1 0 6 )
+				. #( 1 1 1 7 ) 
+				}.
+
+	n train: data nbEpochs: 10000
+]
+
+{ #category : #'helper methods' }
 NNetworkExample >> getIrisData [
 "Prepare the Iris Dataset"
 

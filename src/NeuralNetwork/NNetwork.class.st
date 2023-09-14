@@ -213,29 +213,32 @@ self updateWeight: someInputs.
 
 { #category : #update }
 NNetwork >> train: trainData nbEpochs: nbEpochs [
-"Train the neural network with the provided trainData for nbEpochs"
+	"Train the neural network with the provided trainData for nbEpochs"
 
-| sumError outputs expectedOutput epochPrecision t |
-
-1 to: nbEpochs do: [ :epoch |
-	sumError := 0.
-	epochPrecision := 0.
+	| sumError outputs expectedOutput epochPrecision t normalizedData |
 	
-	trainData do: [ :row |
-		outputs := self feed: row allButLast.
-		expectedOutput := (1 to: self numberOfOutputs) collect: [ :notUsed | 0 ].
-		expectedOutput at: (row last) + 1 put: 1.
-		(row last = (self predict: row allButLast))
-			ifTrue: [ epochPrecision := epochPrecision + 1 ].
-		t := (1 to: expectedOutput size) 
-				collect: [ :i | ((expectedOutput at: i) - (outputs at: i)) squared ].
-		sumError := sumError + t sum.
-		self backwardPropagateError: expectedOutput.
-		self updateWeight: row allButLast. 
-		].
-	errors add: sumError.
-	precisions add: (epochPrecision / trainData size) asFloat.
-	].
+	normalizedData := Normalization new normalizeData: trainData.
+
+	1 to: nbEpochs do: [ :epoch |
+		sumError := 0.
+		epochPrecision := 0.
+
+		normalizedData do: [ :row |
+			outputs := self feed: row allButLast.
+			expectedOutput := ( 1 to: self numberOfOutputs ) collect: [
+				                  :notUsed | 0 ].
+			expectedOutput at: row last + 1 put: 1.
+			row last = ( self predict: row allButLast ) ifTrue: [
+				epochPrecision := epochPrecision + 1 ].
+			t := ( 1 to: expectedOutput size ) collect: [ :i |
+				     ( ( expectedOutput at: i ) - ( outputs at: i ) ) squared ].
+			sumError := sumError + t sum.
+			self backwardPropagateError: expectedOutput.
+			self updateWeight: row allButLast
+			].
+		errors add: sumError.
+		precisions add: ( epochPrecision / trainData size ) asFloat
+		]
 ]
 
 { #category : #update }
