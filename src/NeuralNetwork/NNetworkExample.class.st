@@ -326,6 +326,27 @@ legend build.
 ]
 
 { #category : #'helper methods' }
+NNetworkExample >> exampleNormalization [
+	"Run the script below to see the results: 
+	
+	NNetworkExample new exampleNormalization
+	
+	"
+
+	| max min irisData |
+	
+	max := OrderedCollection new.
+	min := OrderedCollection new.
+	irisData := self getIrisData.
+
+	1 to: 4 do: [ :i |
+		max add: (irisData collect: [ :d | d at: i ]) max.
+		min add: (irisData collect: [ :d | d at: i ]) min ].
+
+	^ { max . min }
+]
+
+{ #category : #'helper methods' }
 NNetworkExample >> exampleNormalizedData [
 	"Run the script below to see the results: 
 	
