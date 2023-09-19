@@ -59,6 +59,37 @@ Matrix >> asArray [
 	^ array asArray
 ]
 
+{ #category : #accessing }
+Matrix >> asStructuredArray [
+	"Return a structured arrat that describes the matrix"
+	
+	^ (1 to: nbRows) collect: [ :i | self atRow: i ] as: Array.
+]
+
+{ #category : #accessing }
+Matrix >> at: aPoint [
+	"Access an element of the matrix"
+	
+	^ array at: ((aPoint x - 1) * nbColumns + (aPoint y - 1)) + 1
+]
+
+{ #category : #accessing }
+Matrix >> at: aPoint put: aNumber [
+	"Modify an element of the matrix"
+	
+	^ array at: ((aPoint x - 1) * nbColumns + (aPoint y - 1)) + 1
+				put: aNumber asFloat
+]
+
+{ #category : #accessing }
+Matrix >> atRow: rowNumber [
+	"Return a particular row"
+	
+	(rowNumber between: 1 and: rowNumber)
+		ifFalse: [ self error: 'index out of range' ].
+		^ (1 to: nbColumns) collect: [ :x | self at: rowNumber @ x ].
+]
+
 { #category : #initialization }
 Matrix >> fromContents: content [
 	"Initialize the matrix with a linear content"
@@ -93,6 +124,13 @@ Matrix >> initializeRows: numRows columns: numColumns [
 	nbRows := numRows.
 	nbColumns := numColumns.
 	array := self newArray.
+]
+
+{ #category : #accessing }
+Matrix >> max [
+	"Return the maximum value of the matrix"
+	
+	^ self asArray max
 ]
 
 { #category : #accessing }
