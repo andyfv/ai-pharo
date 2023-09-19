@@ -58,6 +58,32 @@ Matrix >> + matrixOrVector [
 	^ self + m.
 ]
 
+{ #category : #operations }
+Matrix >> add: aMatrix [
+	"Add two matrices, the reciever and the argument, and produces
+	a new matrix"
+	
+	| result resultArray |
+	
+	nbColumns = aMatrix nbColumns 
+		ifFalse: [ self error: 'dimensions do not conform' ].
+	nbRows = aMatrix nbRows
+		ifFalse: [ self error: 'dimensions do not conform' ].
+	
+	resultArray := ByteArray new: (nbRows * aMatrix nbColumns * 8).
+	
+	self assert: [ nbRows * nbColumns = array size ].
+	self assert: [ aMatrix nbRows * aMatrix nbColumns = aMatrix size ].
+	self assert: [ nbRows * aMatrix nbColumns * 8 = resultArray size ].
+	self add: self getHandle 
+			with: nbRows 
+			with: nbColumns 
+			with: aMatrix getHandle
+			in: resultArray.
+	result := Matrix newHandle: resultArray rows: nbRows columns: nbColumns.
+	^ result
+]
+
 { #category : #accessing }
 Matrix >> array [ 
 	"The array containing maxtrix values"
