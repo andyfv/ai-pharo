@@ -59,3 +59,13 @@ MatrixTest >> testMax [
 	
 	self assert: m max equals: 4.
 ]
+
+{ #category : #tests }
+MatrixTest >> testSumHorizontal [
+	| m expectedResult | 
+	
+	m := Matrix newFromArrays: #( #(1.0 2.0) #(3.0 4.0) #(5.0 6.0) ).
+	expectedResult := Matrix newFromArrays: #( #(3.0) #(7.0) #(11.0) ).	
+	
+	self assert: (m sumHorizontal asStructuredArray) equals: expectedResult asStructuredArray.
+]

@@ -222,3 +222,19 @@ Matrix >> size [
 	
 	^ nbColumns * nbRows
 ]
+
+{ #category : #operations }
+Matrix >> sumHorizontal [
+	"Horizontal summing"
+	
+	| result sum |
+	
+	result := Matrix newRows: nbRows columns: 1.
+	1 to: nbRows do: [ :y |
+		sum := 0.
+		1 to: nbColumns do: [ :x |
+			sum := sum + (self at: y @ x) ].
+		result at: y @ 1 put: sum 
+		].
+	^ result 
+]
