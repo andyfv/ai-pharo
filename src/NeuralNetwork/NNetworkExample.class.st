@@ -368,7 +368,8 @@ NNetworkExample >> exampleNormalizedData [
 				. #( 1 1 1 7 ) 
 				}.
 
-	n train: data nbEpochs: 10000
+	n train: data nbEpochs: 10000.
+	^ n
 ]
 
 { #category : #'helper methods' }
