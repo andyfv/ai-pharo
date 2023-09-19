@@ -44,6 +44,20 @@ Matrix class >> newRows: numRows columns: numColumns [
 			yourself
 ]
 
+{ #category : #operations }
+Matrix >> + matrixOrVector [
+	"Add either a matrix or a vector to the receiver.
+	The argument could either be a matrix of the same size or
+	a vector. A new matrix is returned as result."
+	
+	| m |
+	((nbRows = matrixOrVector nbRows) and: [ nbColumns = matrixOrVector nbColumns])
+		ifTrue: [ ^ self add: matrixOrVector ].
+	matrixOrVector nbColumns ~= 1 ifTrue: [ self error: 'not a n*1 vector' ].
+	m := matrixOrVector stretchToColumns: nbColumns.
+	^ self + m.
+]
+
 { #category : #accessing }
 Matrix >> array [ 
 	"The array containing maxtrix values"
