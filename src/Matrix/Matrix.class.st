@@ -44,14 +44,14 @@ Matrix class >> newRows: numRows columns: numColumns [
 			yourself
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> array [ 
 	"The array containing maxtrix values"
 	
 	^ array
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> asArray [
 
 	"return a linear array of the matrix values"
@@ -67,7 +67,7 @@ Matrix >> fromContents: content [
 	content doWithIndex: [ :v :i | array at: i put: v ].
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> getHandle [
 	"Return the handle of the foreign object.
 	This allows the array to bw accessed from C"
@@ -95,21 +95,21 @@ Matrix >> initializeRows: numRows columns: numColumns [
 	array := self newArray.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> nbColumns [
 	"Number of columns defined in the matrix"
 	
 	^ nbColumns
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> nbRows [
 	"Number of rows defined in the matrix"
 	
 	^ nbRows
 ]
 
-{ #category : #initialization }
+{ #category : #creation }
 Matrix >> newArray [
 	"Create an array used to contains the store the matrix content"
 	
@@ -118,7 +118,7 @@ Matrix >> newArray [
 			size: nbColumns * nbRows
 ]
 
-{ #category : #initialization }
+{ #category : #creation }
 Matrix >> newArrayFromHandle: aHandle [
 	"Create an external array using a handle"
 	
@@ -127,7 +127,7 @@ Matrix >> newArrayFromHandle: aHandle [
 			type: 'double' size: nbColumns * nbRows
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Matrix >> size [
 	"The number of values contained in the matrix"
 	
