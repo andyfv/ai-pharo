@@ -36,6 +36,16 @@ Matrix class >> newFromArrays: arrays [
 ]
 
 { #category : #'instance creation' }
+Matrix class >> newHandle: aHandle rows: numRows columns: numColumns [
+	"Create a matrix with a provided content. Useful when creating
+	a matrix after an FFI operation"
+	
+	^ self basicNew 
+			initializeHandle: aHandle rows: numRows columns: numColumns;
+			yourself
+]
+
+{ #category : #'instance creation' }
 Matrix class >> newRows: numRows columns: numColumns [
 	"Create a matrix with a given shape"
 	
