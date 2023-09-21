@@ -61,6 +61,15 @@ MatrixTest >> testMax [
 ]
 
 { #category : #tests }
+MatrixTest >> testPrinting [
+	| m | 
+	
+	m := Matrix newFromArrays: #( #(1 2 3) #(4 5 6) ).
+	
+	self assert: (m + m) asString equals: ('(2.0 4.0 6.0', String cr, '8.0 10.0 12.0)' ).
+]
+
+{ #category : #tests }
 MatrixTest >> testSumHorizontal [
 	| m expectedResult | 
 	

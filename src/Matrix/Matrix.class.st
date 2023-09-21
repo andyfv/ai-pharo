@@ -226,6 +226,28 @@ Matrix >> newArrayFromHandle: aHandle [
 			type: 'double' size: nbColumns * nbRows
 ]
 
+{ #category : #printing }
+Matrix >> printOn: aStream [
+	"Print the matrix in the stream, with 4 decimals for each value"
+		
+	self printOn: aStream round: 4.
+]
+
+{ #category : #printing }
+Matrix >> printOn: aStream round: nbDecimals [
+	"Print the receiver matrix into a stream. All numerical value are 
+	truncated to a fixed number of decimals"
+	
+	aStream nextPutAll: '('. 
+	(1 to: nbRows) 
+		do: [ :r | (self atRow: r) 
+			do: [ :each | aStream nextPutAll: (each round: nbDecimals) printString ]
+			separatedBy: [ aStream space ]
+		]
+	separatedBy: [ aStream cr ].
+	aStream nextPutAll: ')'.
+]
+
 { #category : #accessing }
 Matrix >> size [
 	"The number of values contained in the matrix"
