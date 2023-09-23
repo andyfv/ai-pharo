@@ -227,6 +227,20 @@ Matrix >> max [
 	^ self asArray max
 ]
 
+{ #category : #operations }
+Matrix >> multiplyPerElement: mat [
+	"Multiply two matrices element-wise"
+	
+	| m |
+	self assert: [ nbRows = mat nbRows ].
+	self assert: [ nbColumns = mat nbColumns ].
+	m := Matrix newRows: nbRows columns: nbColumns.
+	m fromContents: (self asArray with: mat array asArray collect: [ :a :b |
+		a * b ]).
+	
+	^ m
+]
+
 { #category : #accessing }
 Matrix >> nbColumns [
 	"Number of columns defined in the matrix"

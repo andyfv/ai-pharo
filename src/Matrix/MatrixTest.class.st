@@ -91,6 +91,19 @@ MatrixTest >> testMultiplicationOnVector [
 ]
 
 { #category : #tests }
+MatrixTest >> testMultiplicationPerElement [
+	| m1 m2 expectedVector | 
+	
+	m1 := Matrix newFromVector: #(1 2 3).
+	m2 := Matrix newFromVector: #(10 20 30).
+	
+	expectedVector := Matrix newFromVector: #(10 40 90).
+	
+	self assert: (m1 multiplyPerElement: m2) asArray 
+		equals: expectedVector asArray.
+]
+
+{ #category : #tests }
 MatrixTest >> testPrinting [
 	| m | 
 	
