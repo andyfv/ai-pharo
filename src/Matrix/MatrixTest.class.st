@@ -70,6 +70,18 @@ MatrixTest >> testPrinting [
 ]
 
 { #category : #tests }
+MatrixTest >> testStretching [
+	| m | 
+	
+	m := (Matrix newFromVector: #(1 2 3 4)) stretchToColumns: 5.
+	
+	self assert: m nbRows equals: 4.
+	self assert: m nbColumns equals: 5.
+	self assert: (m atRow: 1) equals: #(1 1 1 1 1).
+	self assert: (m atRow: 3) equals: #(3 3 3 3 3).
+]
+
+{ #category : #tests }
 MatrixTest >> testSumHorizontal [
 	| m expectedResult | 
 	
@@ -77,4 +89,13 @@ MatrixTest >> testSumHorizontal [
 	expectedResult := Matrix newFromArrays: #( #(3.0) #(7.0) #(11.0) ).	
 	
 	self assert: (m sumHorizontal asStructuredArray) equals: expectedResult asStructuredArray.
+]
+
+{ #category : #tests }
+MatrixTest >> testVectorCreation [
+	| v |
+	v := Matrix newFromVector: #(1 2 3).
+	self assert: v nbColumns equals: 1.
+	self assert: v nbRows equals: 3.
+	self assert: v asStructuredArray equals: #( #(1) #(2) #(3) ).
 ]

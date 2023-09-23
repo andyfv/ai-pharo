@@ -36,6 +36,16 @@ Matrix class >> newFromArrays: arrays [
 ]
 
 { #category : #'instance creation' }
+Matrix class >> newFromVector: array [
+	"Create a Nx1 matrix from an array of numbers (N = array size)."
+	
+	^ self basicNew
+			initializeRows: array size columns: 1;
+			fromContents: array;
+			yourself 
+]
+
+{ #category : #'instance creation' }
 Matrix class >> newHandle: aHandle rows: numRows columns: numColumns [
 	"Create a matrix with a provided content. Useful when creating
 	a matrix after an FFI operation"
@@ -253,6 +263,22 @@ Matrix >> size [
 	"The number of values contained in the matrix"
 	
 	^ nbColumns * nbRows
+]
+
+{ #category : #transform }
+Matrix >> stretchToColumns: nbOfColumns [
+	"Stretch a vertical vector in a column "
+	| content result |
+	content := OrderedCollection new.
+	1 to: nbRows do: [ :row |
+		1 to: nbOfColumns do: [ :columns |
+			content add: (self at: row @ 1) 
+			] 
+		].
+	
+	result := Matrix newRows: nbRows columns: nbOfColumns .
+	result fromContents: content.
+	^ result. 
 ]
 
 { #category : #operations }
