@@ -86,6 +86,13 @@ Matrix >> + matrixOrVector [
 ]
 
 { #category : #operations }
+Matrix >> +* anotherMatrix [
+	"Shortcut for the dot product between matrices"
+		
+	^ self dot: anotherMatrix
+]
+
+{ #category : #operations }
 Matrix >> / value [
 	"Divide each element of the matrix by a value"
 	
@@ -189,6 +196,47 @@ Matrix >> collect: aOneArgBlock [
 		].
 	
 	^ result
+]
+
+{ #category : #operations }
+Matrix >> dot: anotherMatrix [
+
+	"Compute the dot product between the receiving matrix and the argument"
+	
+	| result resultArray |
+	nbColumns = anotherMatrix nbRows ifFalse: [ self error: 'dimensions do not conform' ].
+	self assert: [ nbRows * nbColumns = array size ].
+	self assert: [ anotherMatrix nbRows * anotherMatrix nbColumns = anotherMatrix size ].
+	
+	resultArray := ByteArray new: (nbRows * 	anotherMatrix nbColumns * 8).
+		
+	self dot: self getHandle 
+			with: nbRows
+			with: nbColumns
+			with: anotherMatrix getHandle
+			with: anotherMatrix nbRows
+			with: anotherMatrix nbColumns
+			in: resultArray .
+			
+	result := Matrix newHandle: resultArray rows: nbRows columns: anotherMatrix nbColumns.
+	
+	^ result.
+	 
+]
+
+{ #category : #operations }
+Matrix >> dot: array1 with: m1_nb_rows with: m1_nb_columns with: array2 with: m2_nb_rows with: m2_nb_columns in: res [
+	"Invoke the C library to perform the dot operator"
+	
+	^ self ffiCall: #(void dot( void *array1
+												, int m1_nb_rows 
+												, int m1_nb_columns 
+												, void *array2 
+												, int m2_nb_rows 
+												, int m2_nb_columns 
+												, void *res)
+								)
+				module: 'libmatrix.so'		 
 ]
 
 { #category : #initialization }
