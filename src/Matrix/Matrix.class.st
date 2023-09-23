@@ -86,6 +86,13 @@ Matrix >> + matrixOrVector [
 ]
 
 { #category : #operations }
+Matrix >> / value [
+	"Divide each element of the matrix by a value"
+	
+	^ self collect: [ :v | v / value ].
+]
+
+{ #category : #operations }
 Matrix >> add: aMatrix [
 	"Add two matrices, the reciever and the argument, and produces
 	a new matrix"
