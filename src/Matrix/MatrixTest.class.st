@@ -72,6 +72,25 @@ MatrixTest >> testMax [
 ]
 
 { #category : #tests }
+MatrixTest >> testMultiplicationOnMatrix [
+	| m | 
+	
+	m := Matrix newFromArrays: #((1 2 3 4) #(10 20 30 40) ).
+	
+	self assert: (m * 5) asStructuredArray 
+		equals: #( #(5.0 10.0 15.0 20.0) #(50.0 100.0 150.0 200.0) ).
+]
+
+{ #category : #tests }
+MatrixTest >> testMultiplicationOnVector [
+	| m | 
+	
+	m := Matrix newFromVector: #(1 2 3 4).
+	
+	self assert: (m * 5) asStructuredArray equals: #( #(5.0) #(10.0) #(15.0) #(20.0) ).
+]
+
+{ #category : #tests }
 MatrixTest >> testPrinting [
 	| m | 
 	

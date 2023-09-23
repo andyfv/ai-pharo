@@ -65,6 +65,13 @@ Matrix class >> newRows: numRows columns: numColumns [
 ]
 
 { #category : #operations }
+Matrix >> * aFactor [
+	"Multiply each element of the matrix by a factor"
+	
+	^ self collect: [ :v | v * aFactor ]
+]
+
+{ #category : #operations }
 Matrix >> + matrixOrVector [
 	"Add either a matrix or a vector to the receiver.
 	The argument could either be a matrix of the same size or
