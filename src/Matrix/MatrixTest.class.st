@@ -44,6 +44,17 @@ MatrixTest >> testAtPut [
 ]
 
 { #category : #tests }
+MatrixTest >> testCollect [
+	| m expectedMatrix | 
+	
+	m := Matrix newFromArrays: #( #(1 2 3) #(4 5 6) ).
+	expectedMatrix := Matrix newFromArrays: #( #(2 3 4) #(5 6 7) ).
+	
+	self assert: (m collect: [ :v | v + 1 ] ) asStructuredArray 
+			equals: expectedMatrix asStructuredArray. 
+]
+
+{ #category : #tests }
 MatrixTest >> testCreation [
 	| m |
 	m := Matrix newFromArrays: #( #(1 2) #(3 4) ).
