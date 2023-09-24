@@ -93,6 +93,13 @@ Matrix >> +* anotherMatrix [
 ]
 
 { #category : #operations }
+Matrix >> - anotherMatrix [
+	"Shortcut to subtract a matrix from the receiver matrix"
+	
+	^ self sub: anotherMatrix
+]
+
+{ #category : #operations }
 Matrix >> / value [
 	"Divide each element of the matrix by a value"
 	
@@ -371,6 +378,46 @@ Matrix >> stretchToColumns: nbOfColumns [
 	result := Matrix newRows: nbRows columns: nbOfColumns .
 	result fromContents: content.
 	^ result. 
+]
+
+{ #category : #operations }
+Matrix >> sub: anotherMatrix [
+	"Subtract a matrix from the receiver matrix"
+	
+	| result resultArray |
+	
+	nbColumns = anotherMatrix nbColumns ifFalse: [ self error: 'dimensions do not conform' ].
+	nbRows = anotherMatrix nbRows ifFalse: [ self error: 'dimensions do not conform' ].
+	
+	resultArray := ByteArray new: (nbRows * anotherMatrix nbColumns * 8).
+	
+	self assert: [ nbRows * nbColumns = array size ].
+	self assert: [ anotherMatrix nbRows * anotherMatrix nbColumns = anotherMatrix size ].
+	self assert: [ nbRows * anotherMatrix nbColumns * 8 = resultArray size ].
+	
+	self sub: self getHandle 
+			with: nbRows
+			with: nbColumns
+			with: anotherMatrix getHandle
+			in: resultArray.
+	
+	result := Matrix newHandle: resultArray rows: nbRows columns: nbColumns.
+	^ result
+]
+
+{ #category : #operations }
+Matrix >> sub: m1 with: nb_rows with: nb_columns with: m2 in: res [
+	"Invoke the C library to perform the subtract operation"
+	
+	^ self ffiCall: #(void sub( double *m1
+									  , int nb_rows
+									  , int nb_columns
+									  , double * m2
+									  , double *res
+									  ) 
+						  )
+			 module: 'libmatrix.so'
+	
 ]
 
 { #category : #operations }
