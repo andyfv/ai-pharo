@@ -357,6 +357,24 @@ Matrix >> printOn: aStream round: nbDecimals [
 	aStream nextPutAll: ')'.
 ]
 
+{ #category : #creation }
+Matrix >> random [
+	"Fill the matrix with random numbers"
+	
+	^ self random: Random new.
+	
+
+]
+
+{ #category : #creation }
+Matrix >> random: randomNumberGenerator [
+	"Fill the matrix with random numbers"
+	
+	self fromContents: ((1 to: nbRows * nbColumns) collect: [:vv |
+		randomNumberGenerator next]).
+
+]
+
 { #category : #accessing }
 Matrix >> size [
 	"The number of values contained in the matrix"
