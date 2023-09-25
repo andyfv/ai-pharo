@@ -325,6 +325,59 @@ legend build.
 
 ]
 
+{ #category : #'as yet unclassified' }
+NNetworkExample >> exampleMatrices [
+	"Run the script below to see the results:
+	
+	NNetworkExample new exampleMatrices 
+	
+	"
+	| n din h dout r x y w1 w2 learningRate losses plot |
+	
+	n := 8. 			"Number of examples"
+	din := 10.		"Number of input values"
+	h := 20.			"Size of the hidden layer"
+	dout := 5.		"Number of output values"
+			
+	r := Random seed: 42.
+	
+	x := (Matrix newRows: n columns: din) random: r.
+	y := (Matrix newRows: n columns: dout) random: r.
+	w1 := (Matrix newRows: din columns: h) random: r.
+	w2 := (Matrix newRows: h columns: dout) random: r.
+	
+	learningRate := 1e-6.
+	losses := OrderedCollection new.
+	
+	1500 timesRepeat: [ 
+		| hh hrelu ypred loss gradYPred gradW2 gradHRelu gradH gradW1 |
+		hh := x +* w1.
+		hrelu := hh collect: [ :v | v max: 0 ].
+		ypred := hrelu +* w2.
+		
+		"Compute and print loss"
+		loss := ((ypred - y) collect: [ :vv | vv * vv]) sum.
+		losses add: loss.
+		
+		"Backpropagate to compute gradients of w2 and w2 with respect to loss"
+		gradYPred := (ypred - y) * 2.0.
+		gradW2 := hrelu transposed +* gradYPred.
+		gradHRelu := gradYPred +* w2 transposed.
+		gradH := gradHRelu collect: [ :v | v max: 0 ].
+		gradW1 := x transposed +* gradH.
+		
+		w1 := w1 - (gradW1 * learningRate).
+		w2 := w2 - (gradW2 * learningRate).
+		].
+	
+	plot := RSLinePlot new y: losses.
+	plot ylabel: 'Error'.
+	plot xlabel: 'Epoch'.
+	
+	^ plot 
+	
+]
+
 { #category : #'helper methods' }
 NNetworkExample >> exampleNormalization [
 	"Run the script below to see the results: 
