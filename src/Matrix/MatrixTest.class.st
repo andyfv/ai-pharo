@@ -172,6 +172,27 @@ MatrixTest >> testSumHorizontal [
 ]
 
 { #category : #tests }
+MatrixTest >> testTransposedOnMatrix [
+	| m expectedMatrix | 
+	
+	m := Matrix newFromArrays: #( #(1 2 3 4) #(5 6 7 8) ).
+	expectedMatrix := Matrix newFromArrays: #( #(1 5) #(2 6) #(3 7) #(4 8)).
+	
+	self assert: m transposed asStructuredArray 
+			equals: expectedMatrix asStructuredArray. 
+]
+
+{ #category : #tests }
+MatrixTest >> testTransposedOnVector [
+	| v | 
+	
+	v := Matrix newFromVector: #(1 2 3).
+	
+	self assert: v transposed asStructuredArray 
+			equals: #( #(1 2 3) ). 
+]
+
+{ #category : #tests }
 MatrixTest >> testVectorCreation [
 	| v |
 	v := Matrix newFromVector: #(1 2 3).

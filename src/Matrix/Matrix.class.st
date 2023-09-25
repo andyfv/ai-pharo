@@ -469,3 +469,19 @@ Matrix >> sumHorizontal [
 		].
 	^ result 
 ]
+
+{ #category : #transform }
+Matrix >> transposed [
+	"Transpose the matrix"
+	
+	| result |
+	result := Matrix newRows: nbColumns columns: nbRows.
+	
+	1 to: nbRows do: [ :row |
+		1 to: nbColumns do: [ :column |
+			result at: column @ row put: (self at: row @ column)
+		]
+	]. 
+
+	^ result
+]
