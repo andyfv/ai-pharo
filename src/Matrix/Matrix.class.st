@@ -317,7 +317,7 @@ Matrix >> nbRows [
 	^ nbRows
 ]
 
-{ #category : #creation }
+{ #category : #'creation - external' }
 Matrix >> newArray [
 	"Create an array used to contains the store the matrix content"
 	
@@ -326,7 +326,7 @@ Matrix >> newArray [
 			size: nbColumns * nbRows
 ]
 
-{ #category : #creation }
+{ #category : #'creation - external' }
 Matrix >> newArrayFromHandle: aHandle [
 	"Create an external array using a handle"
 	
