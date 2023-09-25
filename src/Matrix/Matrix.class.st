@@ -439,6 +439,22 @@ Matrix >> sub: m1 with: nb_rows with: nb_columns with: m2 in: res [
 ]
 
 { #category : #operations }
+Matrix >> sum [
+	"Return the sum of the matrix values"
+	
+	| sum |
+	sum := 0.
+	1 to: nbRows do: [ :y |
+		1 to: nbColumns do: [:x | 
+			sum := sum + (self at: y @ x)
+		].
+	].
+
+	^ sum
+	
+]
+
+{ #category : #operations }
 Matrix >> sumHorizontal [
 	"Horizontal summing"
 	
