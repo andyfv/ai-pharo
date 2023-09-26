@@ -14,32 +14,32 @@ Class {
 	#category : #'NeuralNetwork-Matrix'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> b [
 	"Return the bias vector"
 	
 	^ b 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> b: biasVector [
 	"Set a vector, instance of Matrix, as the bias vector"
 	
 	b := biasVector 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> delta [
 	
 	^ delta 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> delta: deltaMatrix [
 	delta := deltaMatrix 
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> feed: inputMatrix [
 	"Feed the layer with the input matrix"
 	
@@ -57,7 +57,7 @@ NMLayer >> initialize [
 	lr := 0.1
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> lr: aLearningRate [
 	lr := aLearningRate 
 ]
@@ -72,52 +72,52 @@ NMLayer >> nbInputs: nbOfInputs nbOutputs: nbOfOutputs random: random [
 	b random: random.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> next [
 	"Return the next layer"
 	
 	^ next
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> next: aLayer [
 	"Set the next layer"
 	
 	next := aLayer
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> numberOfExamples [
 	^ numberOfExamples
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> numberOfExamples: aNumber [
 	numberOfExamples := aNumber
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> output [ 
 	"Return the output matrix, computed during the feed forward phase"
 	
 	^ output
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> previous [
 	"Return the previous layer"
 	
 	^ previous
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> previous: aLayer [
 	"Set the previous layer"
 	
 	previous := aLayer
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> update [
 	"Update the weights and biases using the delta value"
 	
@@ -127,7 +127,7 @@ NMLayer >> update [
 	next ifNotNil: [ next update ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> update: input [
 	"Update the weights and biases using the input value"
 	
@@ -137,14 +137,14 @@ NMLayer >> update: input [
 	next update
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> w [
 	"Return the Matrix representing the weights"
 	
 	^ w  
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMLayer >> w: matrixForWeights [
 	"Take a Matrix as argument"
 	
