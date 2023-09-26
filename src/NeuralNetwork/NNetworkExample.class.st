@@ -325,7 +325,7 @@ legend build.
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #examples }
 NNetworkExample >> exampleMatrices [
 	"Run the script below to see the results:
 	
