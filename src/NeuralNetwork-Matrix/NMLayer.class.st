@@ -121,8 +121,8 @@ NMLayer >> previous: aLayer [
 NMLayer >> update [
 	"Update the weights and biases using the delta value"
 	
-	w := w - ( (delta +* previous output transposed) * lr / numberOfExamples ).
-	b := b - (delta sumHorizontal * lr / numberOfExamples ).
+	w := w - ((delta +* previous output transposed) * lr / numberOfExamples).
+	b := b - (delta sumHorizontal * lr / numberOfExamples).
 	
 	next ifNotNil: [ next update ]
 ]
@@ -131,7 +131,7 @@ NMLayer >> update [
 NMLayer >> update: input [
 	"Update the weights and biases using the input value"
 	
-	w := w - ( (delta +* input transposed) * lr / numberOfExamples ).
+	w := w - ((delta +* input transposed) * lr / numberOfExamples).
 	b := b - (delta sumHorizontal * lr / numberOfExamples ).
 	
 	next update
