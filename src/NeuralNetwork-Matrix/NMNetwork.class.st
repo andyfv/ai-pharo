@@ -21,7 +21,7 @@ NMNetwork >> addLayer: aLayer [
 	layers add: aLayer.
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> backwardX: x y: y [
 	"Compute and backpropagate the error"
 		
@@ -40,14 +40,14 @@ NMNetwork >> backwardX: x y: y [
 		].
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> computeCost: v1 and: v2 [
 
 	"Compute the cost function for two provided vectors"
 	^ ((v1 - v2) collect: [ :v | v * v]) sum
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> configure: nbOfInputs hidden: nbOfNeurons1 hidden: nbOfNeurons2 nbOfOutputs: nbOfOutputs [
 
 	"Configure the network with the given parameters. The network has two hidden layers"
@@ -70,7 +70,7 @@ NMNetwork >> configure: nbOfInputs hidden: nbOfNeurons1 hidden: nbOfNeurons2 nbO
 	
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> configure: nbOfInputs hidden: nbOfNeurons nbOfOutputs: nbOfOutputs [
 	"Configure the network with the given parameters.
 	The network has only one hidden layer"
@@ -89,7 +89,7 @@ NMNetwork >> configure: nbOfInputs hidden: nbOfNeurons nbOfOutputs: nbOfOutputs 
 	
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> feed: inputs [
 	"Feed the network with the provided inputs vector.
 	Return the output value as a matrix"
@@ -132,7 +132,7 @@ NMNetwork >> lr: aLearningRateAsFloat [
 	layers do: [ :l | l lr: aLearningRateAsFloat ]
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> predict: inputs [
 	"Make a prediction. This method assumes that the number of outputs
 	is the same as the number of different values the network can output"
@@ -142,7 +142,7 @@ NMNetwork >> predict: inputs [
 	^ (outputs asArray indexOf: (outputs max)) - 1
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> train: data nbEpochs: nbEpochs [
 	 "Data is provided as a collection of arrays.
 	The example data needs to be labeled using a numerical value"
@@ -163,7 +163,7 @@ NMNetwork >> train: data nbEpochs: nbEpochs [
 	
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> trainX: x y: y nbOfEpochs: nbEpochs [
 	"Train the network with a set of inputs against the expected values"
 		
@@ -182,7 +182,7 @@ NMNetwork >> trainX: x y: y nbOfEpochs: nbEpochs [
 	^ cost
 ]
 
-{ #category : #initialization }
+{ #category : #update }
 NMNetwork >> update: input [
 
 	"update the weights and bias using the provided input vector"
