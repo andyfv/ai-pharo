@@ -110,6 +110,21 @@ NMNetwork >> initialize [
 	random := Random seed: 42.
 ]
 
+{ #category : #visualization }
+NMNetwork >> inspectorViewLearningCurve [
+	<inspectorPresentationOrder: 90 title: 'Learning Curve'>
+	
+	^ SpRoassal3InspectorPresenter new
+			canvas: self viewLearningCurve;
+			yourself.
+	
+]
+
+{ #category : #visualization }
+NMNetwork >> inspectorViewLearningCurveContext: aContext [
+	aContext withoutEvaluator 
+]
+
 { #category : #accessing }
 NMNetwork >> lr: aLearningRateAsFloat [
 	"Globally set the learning rate"
@@ -172,4 +187,27 @@ NMNetwork >> update: input [
 
 	"update the weights and bias using the provided input vector"
 	layers first update: input
+]
+
+{ #category : #visualization }
+NMNetwork >> viewLearningCurve [
+	| canvas plot |
+	
+	canvas := RSCanvas new.
+	
+	errors ifEmpty: [ ^ canvas add: (RSLabel new text: 'Should first run the network'; fontSize: 15); 
+					yourself ].
+		
+	canvas extent: 500 @ 300.
+	
+	plot := RSLinePlot new y: errors.
+	plot ylabel: 'Error'.
+	plot xlabel: 'Epoch'.
+	plot horizontalTick integer.
+	plot build.
+	
+	canvas add: (plot canvas asShape).
+	canvas @ RSCanvasController.
+	^ canvas
+
 ]
