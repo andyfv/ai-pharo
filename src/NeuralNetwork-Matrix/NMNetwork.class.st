@@ -9,7 +9,7 @@ Class {
 	#category : #'NeuralNetwork-Matrix'
 }
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMNetwork >> addLayer: aLayer [
 	"Add a layer to the network. Note that layers form a bidirectional chain"
 	
@@ -110,7 +110,7 @@ NMNetwork >> initialize [
 	random := Random seed: 42.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 NMNetwork >> lr: aLearningRateAsFloat [
 	"Globally set the learning rate"
 	
