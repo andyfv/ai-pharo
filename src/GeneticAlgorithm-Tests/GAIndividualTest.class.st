@@ -21,18 +21,3 @@ GAIndividualTest >> testCreation [
 	ind := individuals anyOne.
 	self assert: (ind genes allSatisfy: [ :c | ($a to: $z) includes: c ]).
 ]
-
-{ #category : #tests }
-GAIndividualTest >> testGuess [
-	| individuals factory fitnessBlock |
-	factory := [ :random | ($a to: $z) atRandom: random ].
-	individuals := GAIndividual create: 100 
-													withNbOfGenes: 3 
-													usingFactory: factory.
-
-	fitnessBlock := [ :genes | 
-		(genes with: 'cat' asArray collect: 
-			[ :a :b | (a == b) ifTrue: [ 1 ] ifFalse: [ 0 ] ]) sum
-		].													
-	individuals do: [ :i | i computeFitnessUsing: fitnessBlock ].
-]
