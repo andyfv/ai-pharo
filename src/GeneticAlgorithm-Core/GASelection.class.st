@@ -45,7 +45,7 @@ GASelection >> checkIfEngineSet [
 ]
 
 { #category : #initialization }
-GASelection >> checkIfInitialPopulation [
+GASelection >> checkIfInitialPopulationSet [
 
 	self
 		assert: [ initialPopulation notNil ]
@@ -85,7 +85,7 @@ GASelection >> doSelection [
 	"Produce a new population using the selection algorithm"
 	
 	self checkIfEngineSet .
-	self checkIfInitialPopulation.
+	self checkIfInitialPopulationSet.
 	populationSize := initialPopulation size.
 	fittest := initialPopulation first.
 	initialPopulation do: [ :ind |
@@ -138,9 +138,9 @@ GASelection >> fittest [
 GASelection >> initialPopulation: aPopulation [
 	"Set the initial population. This is used to create the new
 	population"
-	
+
 	initialPopulation := aPopulation.
-	self checkInitialPopulation.
+	self checkIfInitialPopulationSet 
 ]
 
 { #category : #initialization }
