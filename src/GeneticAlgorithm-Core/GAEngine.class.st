@@ -44,7 +44,7 @@ Class {
 	#category : #'GeneticAlgorithm-Core'
 }
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> beforeCreatingInitialIndividual: aOneArgBlock [
 	"Set the behaviour to be executed before creating an individual.
 	The block takes a random number generator as a n argument."
@@ -52,7 +52,7 @@ GAEngine >> beforeCreatingInitialIndividual: aOneArgBlock [
 	beforeCreatingInitialIndividual := aOneArgBlock 
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> beforeRun [
 	"Method executed before creating the initial population"
 	
@@ -61,7 +61,7 @@ GAEngine >> beforeRun [
 	selection populationSize: populationSize.
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 GAEngine >> checkIfReadyToRun [
 	"Raise an exception if the configuration is not ready to be run"
 
@@ -81,7 +81,7 @@ GAEngine >> checkIfReadyToRun [
 	self assert: [ logs isEmpty ] description: 'Already  been run'
 ]
 
-{ #category : #accessing }
+{ #category : #operations }
 GAEngine >> createGeneBlock: threeArgBlock [
 	"Three arguments must be provided rand, index, and the individual being filled"
 	
@@ -89,7 +89,7 @@ GAEngine >> createGeneBlock: threeArgBlock [
 	mutationOperator geneFactoryBlock: threeArgBlock 
 ]
 
-{ #category : #accessing }
+{ #category : #operations }
 GAEngine >> crossover: partnerA with: partnerB [
 	"Perform a crossover operation between the two arguments" 
 	
@@ -104,14 +104,14 @@ GAEngine >> crossoverOperator: aCrossoverOperator [
 	crossoverOperator random: random. 
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> endForMaxNumberOfGeneration: nbOfGenerations [
 	"End the algorithm after a fixed number of generations"
 	
 	terminationBlock := [ logs last generationNumber >= nbOfGenerations ]
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> endIfFitnessIsAbove: aValueTreshhold [
 	"End the algorithm if the best fitness value is above a particular threshold"
 
@@ -119,7 +119,7 @@ GAEngine >> endIfFitnessIsAbove: aValueTreshhold [
 		[ logs last fittestIndividual fitness >= aValueTreshhold ]
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> endIfNoImprovementFor: nbOfGenerations [
 	"End if no improvememnt occurred within a given number 
 	of generations"
@@ -127,7 +127,7 @@ GAEngine >> endIfNoImprovementFor: nbOfGenerations [
 	^ self endIfNoImprovementFor: nbOfGenerations withinRangeOf: 0
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> endIfNoImprovementFor: nbOfGenerations withinRangeOf: delta [
 	"End if no improvement occired (within a delta value) within a 
 	given number of generations"
@@ -196,7 +196,7 @@ GAEngine >> initializePopulation [
 		]
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 GAEngine >> isIndividual: anIndividual betterThan: aFittestIndividual [
 	"Compare an individual against the fittest individual of the population"
 	
@@ -211,14 +211,14 @@ GAEngine >> logs [
 	^ logs
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> maximizeComparator [
 	"A better indiviudal is the one with the highest finess value"
 	
 	compareFitness := [ :f1 :f2 | f1 > f2 ]
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> microPause [
 	"Useful when you wish to log in the transcript and see progresses"
 	
@@ -229,7 +229,7 @@ GAEngine >> microPause [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #configuration }
 GAEngine >> minimizeComparator [
 	"A better indiviudal is the one with the lowest finess value"
 
@@ -272,7 +272,7 @@ GAEngine >> populationSize: anInteger [
 	populationSize := anInteger 
 ]
 
-{ #category : #accessing }
+{ #category : #operations }
 GAEngine >> produceNewPopulation [
 	"This method 
 		-	produces a new population, set in the variables 'population'
@@ -297,7 +297,7 @@ GAEngine >> result [
 	^ self logs last fittestIndividual genes
 ]
 
-{ #category : #accessing }
+{ #category : #operations }
 GAEngine >> run [
 	"Public method -- Run the genetic algorithm"
 	
@@ -350,7 +350,7 @@ GAEngine >> selection: aSelection [
 	aSelection engine: self.
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 GAEngine >> shouldTerminate [
 	logs ifEmpty: [ ^ false ].
 	^ terminationBlock value
