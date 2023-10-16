@@ -385,7 +385,6 @@ GAEngine >> viewFitness [
 		                   y: #bestFitness.
 	plotBestFitness color: Color blue.
 	chart add: plotBestFitness.
-	legend text: 'Best fitness' withBoxColor: Color blue.
 
 	plotWorstFitness := RSLinePlot new
 		                    rawData: self logs
@@ -393,7 +392,6 @@ GAEngine >> viewFitness [
 		                    y: #worstFitness.
 	plotWorstFitness color: Color red.
 	chart add: plotWorstFitness.
-	legend text: 'Worst fitness' withBoxColor: Color red.
 
 	plotAverageFitness := RSLinePlot new
 		                      rawData: self logs
@@ -401,12 +399,17 @@ GAEngine >> viewFitness [
 		                      y: #averageFitness.
 	plotAverageFitness color: Color green.
 	chart add: plotAverageFitness.
-	legend text: 'Average fitness' withBoxColor: Color green.
-	
 
-	legend container: chart canvas.
-	legend build.
 	chart build.
+	
+	legend := RSLegend new.
+	legend layout vertical.
+	legend title: 'Fitness evolution'.
+	legend container: chart canvas.
+	legend text: 'Best fitness' withBoxColor: Color blue.
+	legend text: 'Worst fitness' withBoxColor: Color red.
+	legend text: 'Average fitness' withBoxColor: Color green.	
+	legend build.
 	
 	^ chart canvas
 ]
