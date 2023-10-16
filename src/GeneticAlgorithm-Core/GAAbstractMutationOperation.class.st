@@ -20,10 +20,11 @@ GAAbstractMutationOperation >> geneFactoryBlock: oneArgBlock [
 ]
 
 { #category : #initialization }
-GAAbstractMutationOperation >> initialize [ 
+GAAbstractMutationOperation >> initialize [
+
 	super initialize.
-		
-	self mutationRate: 0.1.
+
+	self mutationRate: 0.01
 ]
 
 { #category : #initialization }

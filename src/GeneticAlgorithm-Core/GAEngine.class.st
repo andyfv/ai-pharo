@@ -168,7 +168,7 @@ GAEngine >> initialize [
 	self maximizeComparator.
 
 	mutationOperator := GAMutationOperation new.
-	mutationOperator mutationRate: 0.1.
+	mutationOperator mutationRate: 0.01.
 	mutationOperator random: random.
 
 	crossoverOperator := GACrossoverOperation new.
@@ -176,8 +176,7 @@ GAEngine >> initialize [
 
 	self selection: GATournamentSelection new.
 
-	beforeCreatingInitialIndividual := [ :rand | 
-		"do nothing per default"
+	beforeCreatingInitialIndividual := [ :rand | "do nothing per default"
 	                                    ]
 ]
 
@@ -194,6 +193,20 @@ GAEngine >> initializePopulation [
 				 random: random;
 				 set: numberOfGenes genesUsing: createGeneBlock)
 		]
+]
+
+{ #category : #visualization }
+GAEngine >> inspectorViewFitness [
+	<inspectorPresentationOrder: 90 title: 'Fitness'>
+	
+	^ SpRoassal3InspectorPresenter new
+		canvas: self viewFitness;
+		yourself.
+]
+
+{ #category : #visualization }
+GAEngine >> inspectorViewFitnessContext: aContext [
+	aContext withoutEvaluator 
 ]
 
 { #category : #testing }
@@ -277,9 +290,9 @@ GAEngine >> produceNewPopulation [
 	"This method 
 		-	produces a new population, set in the variables 'population'
 		- select the fittest element of the population"
-		
+
 	selection doSelection.
-	populationSize := selection population .
+	population := selection population
 ]
 
 { #category : #accessing }
@@ -354,4 +367,46 @@ GAEngine >> selection: aSelection [
 GAEngine >> shouldTerminate [
 	logs ifEmpty: [ ^ false ].
 	^ terminationBlock value
+]
+
+{ #category : #visualization }
+GAEngine >> viewFitness [
+	"Visualize the evolution of the population"
+
+	| chart legend plotBestFitness plotWorstFitness plotAverageFitness |
+	chart := RSCompositeChart new.
+	legend := RSLegend new.
+	legend layout vertical.
+	legend title: 'Fitness evolution'.
+
+	plotBestFitness := RSLinePlot new
+		                   rawData: self logs
+		                   x: #generationNumber
+		                   y: #bestFitness.
+	plotBestFitness color: Color blue.
+	chart add: plotBestFitness.
+	legend text: 'Best fitness' withBoxColor: Color blue.
+
+	plotWorstFitness := RSLinePlot new
+		                    rawData: self logs
+		                    x: #generationNumber
+		                    y: #worstFitness.
+	plotWorstFitness color: Color red.
+	chart add: plotWorstFitness.
+	legend text: 'Worst fitness' withBoxColor: Color red.
+
+	plotAverageFitness := RSLinePlot new
+		                      rawData: self logs
+		                      x: #generationNumber
+		                      y: #averageFitness.
+	plotAverageFitness color: Color green.
+	chart add: plotAverageFitness.
+	legend text: 'Average fitness' withBoxColor: Color green.
+	
+
+	legend container: chart canvas.
+	legend build.
+	chart build.
+	
+	^ chart canvas
 ]
