@@ -132,7 +132,7 @@ GAEngine >> endIfNoImprovementFor: nbOfGenerations withinRangeOf: delta [
 	"End if no improvement occired (within a delta value) within a 
 	given number of generations"
 	
-	terminationBlock := [ (logs last generationNumber => nbOfGenerations) and: 
+	terminationBlock := [ (logs last generationNumber >= nbOfGenerations) and: 
 		[ | fs |
 		fs := (logs last: nbOfGenerations) collect: [ :aLog | aLog
 			fittestIndividual fitness ].
