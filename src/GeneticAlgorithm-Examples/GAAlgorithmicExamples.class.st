@@ -5,6 +5,48 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+GAAlgorithmicExamples >> knapsack [
+	"Use genetic algorithm to search for 
+	solution of the knapsack problem
+	
+	Run the script below to see the results:"
+	<script: 'self new knapsack'>
+	
+	| maxWeight boxes g |
+	
+	"The maximum weight capacity of the knapsack"
+	maxWeight := 15.
+	
+	"A box is a tuple of (value, weight).
+	There is a empty box with (value, weight) = (0, 0) in order for 
+	the algorithm to be able to find solutions for unbounded 
+	versions of the problem. It will pick the possible boxes 
+	and fill the remaining slots with empty boxes."
+	boxes := #( #(4 12) #(2 1) #(2 2) #(1 1) #(10 4) #(0 0) ).
+	
+	g := GAEngine new.
+	g endIfNoImprovementFor: 10.
+	g populationSize: 20000.
+	
+	"Because the lightest box is 1kg, there could not be more 
+	than 15 boxes. Thus the maximum number of genes possible is 15"
+	g numberOfGenes: 15.
+	g createGeneBlock: [ :rand :index :ind | boxes atRandom: rand ].
+	g maximizeComparator.
+	g fitnessBlock: [ :genes | 
+		| totalWeight totalValue penalty |
+		totalValue := (genes collect: #first) sum.
+		totalWeight := (genes collect: #second) sum.
+		maxWeight < totalWeight 
+			ifTrue: [ penalty := (maxWeight - totalWeight) abs * 50 ]
+			ifFalse: [ penalty := 0 ].
+		totalValue - penalty.
+		].
+	g run.
+	^ g result copyWithout: #(0 0).
+]
+
+{ #category : #'as yet unclassified' }
 GAAlgorithmicExamples >> primes [
 	"Use genetic algorithms to identify the prime factors of any given number
 	
