@@ -114,6 +114,60 @@ GAAlgorithmicExamples >> knapsack01 [
 ]
 
 { #category : #'as yet unclassified' }
+GAAlgorithmicExamples >> meetingRoomScheduling [
+	"Meetings should not overlap and should a minimum 
+	amount of rooms
+
+	Run the script below to see the results:"
+
+	<script: 'self new meetingRoomScheduling'>
+	| meetings g numberOfMeetings |
+	"A meeting is a tuple with structure = (start time, end time)"
+	meetings := #( #( 1 3 ) #( 2 3 ) #( 5 6 ) #( 7 9 ) #( 4 7 ) ).
+	numberOfMeetings := meetings size.
+
+
+	g := GAEngine new.
+	g endIfNoImprovementFor: 10.
+	g populationSize: 20000.
+
+	"The number of genes is the number of meetings.
+	Worst case scenario all the meetings are overlapping 
+	and each meetings needs its own room. So the 
+	maximum number of rooms = the maximum number of meetings."
+	g numberOfGenes: numberOfMeetings.
+	g createGeneBlock: [ :rand :index :ind |
+		(1 to: numberOfMeetings) atRandom: rand ].
+
+	"We want to minimize the number of rooms"
+	g minimizeComparator.
+
+	g fitnessBlock: [ :genes |
+		| distribution numberOfOverlap |
+		distribution := OrderedCollection new.
+		numberOfMeetings timesRepeat: [
+			distribution add: OrderedCollection new ].
+		genes doWithIndex: [ :roomNumber :index |
+			(distribution at: roomNumber) add: (meetings at: index) ].
+		numberOfOverlap := 0.
+		distribution do: [ :aSetOfMeetings |
+			| table |
+			table := OrderedCollection new: 10 withAll: 0.
+			aSetOfMeetings do: [ :meeting |
+				meeting first to: meeting second do: [ :v |
+				table at: v put: (table at: v) + 1 ]
+				].
+			numberOfOverlap := numberOfOverlap
+			                   + (table select: [ :v | v >= 2 ]) size
+			].
+		(distribution select: #notEmpty) size + numberOfOverlap
+		].
+
+	g run.
+	^ g result asSet size
+]
+
+{ #category : #'as yet unclassified' }
 GAAlgorithmicExamples >> primes [
 	"Use genetic algorithms to identify the prime factors of any given number
 	
