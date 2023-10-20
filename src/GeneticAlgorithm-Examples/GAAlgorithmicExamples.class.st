@@ -47,6 +47,57 @@ GAAlgorithmicExamples >> knapsack [
 ]
 
 { #category : #'as yet unclassified' }
+GAAlgorithmicExamples >> knapsack01 [
+	"Use genetic algorithm to search for 
+	solution of the 0-1 knapsack problem
+	
+	Run the script below to see the results:"
+	<script: 'self new knapsack01'>
+	
+	| maxWeight boxes g decodeToBoxes |
+	
+	"The maximum weight capacity of the knapsack"
+	maxWeight := 15.
+	
+	"A box is a tuple of (value, weight)."
+	boxes := #( #(4 12) #(2 1) #(2 2) #(1 1) #(10 4) ).
+	
+	g := GAEngine new.
+	g endIfNoImprovementFor: 10.
+	g populationSize: 20000.
+	g numberOfGenes: boxes size.
+	
+	"A gene is either 0 or 1"
+	g createGeneBlock: [ :rand :index :ind | #(0 1) atRandom: rand ].
+	g maximizeComparator.
+	g fitnessBlock: [ :genes | 
+		| totalWeight totalValue penalty |
+		decodeToBoxes := OrderedCollection new.
+		genes doWithIndex: [ :b :ind | b = 1 ifTrue: [ 
+				decodeToBoxes add: (boxes at: ind) ] ].
+		decodeToBoxes 
+			ifEmpty: [ 
+				totalValue := 0. 
+				totalWeight := 0 
+				]
+			ifNotEmpty: [ 
+				totalValue := (decodeToBoxes collect: #first) sum.
+				totalWeight := (decodeToBoxes collect: #second) sum. 
+				].
+		maxWeight < totalWeight 
+			ifTrue: [ penalty := (maxWeight - totalWeight) abs * 50 ]
+			ifFalse: [ penalty := 0 ].
+		totalValue - penalty.
+		].
+	g run.
+	
+	decodeToBoxes := OrderedCollection new.
+	g result doWithIndex: [ :b :ind |
+		b = 1 ifTrue: [ decodeToBoxes add: (boxes at: ind) ] ].
+	^ decodeToBoxes 
+]
+
+{ #category : #'as yet unclassified' }
 GAAlgorithmicExamples >> primes [
 	"Use genetic algorithms to identify the prime factors of any given number
 	
