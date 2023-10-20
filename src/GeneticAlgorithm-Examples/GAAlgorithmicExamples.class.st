@@ -7,7 +7,14 @@ Class {
 { #category : #'as yet unclassified' }
 GAAlgorithmicExamples >> knapsack [
 	"Use genetic algorithm to search for 
-	solution of the knapsack problem
+	solution of the knapsack problem.
+	
+	In this unbounded variant as a result we have a set of boxes.
+	For this variant we have two objectives (constraints): 
+		- maximizing the value of the bag
+		- ensure that the overall weight does not exceed the maximum
+	
+	The objective are met by using a penalty
 	
 	Run the script below to see the results:"
 	<script: 'self new knapsack'>
@@ -49,7 +56,16 @@ GAAlgorithmicExamples >> knapsack [
 { #category : #'as yet unclassified' }
 GAAlgorithmicExamples >> knapsack01 [
 	"Use genetic algorithm to search for 
-	solution of the 0-1 knapsack problem
+	solution of the 0-1 knapsack problem.
+	
+	In this 0-1 variant the solution is a set of 0 and 1.
+	For this variant we have three objectives (constraints): 
+		- maximizing the value of the bag
+		- ensure that the overall weight does not exceed the maximum
+		- boxes should not repeat themselves
+	
+	There could have been a second penalty to express the additional 
+	(third) objective
 	
 	Run the script below to see the results:"
 	<script: 'self new knapsack01'>
