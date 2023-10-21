@@ -198,3 +198,61 @@ GAAlgorithmicExamples >> primes [
 	g logs last bestFitness = 0
 		ifTrue: [ ^ g result copyWithout: 1 ]
 ]
+
+{ #category : #'as yet unclassified' }
+GAAlgorithmicExamples >> sudoku [
+	"We have a grid and a set of numbers.
+	We want to combine the numbers in such a 
+	way that each vertical, horizontal and diagonal
+	line equals 30. In this scenario the grid is 3x3
+
+	Run the script below to see the results:"
+
+	<script: 'self new sudoku'>
+	| numbers sums g canvas elements |
+	numbers := #( 2 4 6 8 10 12 14 16 18 ).
+
+	"The combinations to sum:"
+	sums := {
+		        #( 1 2 3 ).
+		        #( 4 5 6 ).
+		        #( 7 8 9 ).
+
+		        "Diagonal sums"
+		        #( 1 5 9 ).
+		        #( 7 5 3 ).
+
+		        "Verical sums"
+		        #( 1 4 7 ).
+		        #( 2 5 8 ).
+		        #( 3 6 9 ) }.
+	"Horizontal sums"
+
+	g := GAEngine new.
+	g populationSize: 400.
+	g endIfFitnessIsAbove: 9.
+	g mutationRate: 0.01.
+	g numberOfGenes: 9.
+	g createGeneBlock: [ :rand :index | numbers atRandom: rand ].
+	g fitnessBlock: [ :genes |
+		| score penalty |
+		score := (sums collect: [ :arr |
+			          (arr collect: [ :index | genes at: index ]) sum ])
+			         inject: 0
+			         into: [ :a :b | a + (b - 30) abs ].
+		penalty := genes size - genes asSet size * 3.
+		9 - (score + penalty)
+		].
+	g run.
+
+	"Visualize the grid"
+	canvas := RSCanvas new.
+	elements := RSLabel models: g result.
+	canvas addAll: elements.
+	RSGridLayout new
+		gapSize: 20;
+		on: elements.
+
+	canvas @ RSCanvasController.
+	canvas open
+]
